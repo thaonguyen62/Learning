@@ -1,0 +1,207 @@
+Array / ArrayList
+
+- Array vs ArrayList khác nhau gì?
+=> Array: fix size, lưu primitive type trực tiếp.
+   ArrayList: dynamic size, dùng Object[] nội bộ, khi đầy tự resize lên 1.5x capacity (default capacity = 10).
+
+- ArrayList vs LinkedList khi nào dùng cái nào?
+=> ArrayList: khi cần get by index O(1), add cuối O(1) amortized.
+   LinkedList: khi cần add/remove ở đầu O(1) thường xuyên.
+   Lưu ý: ArrayList cache-friendly hơn vì contiguous memory.
+
+- Time complexity của get, add, remove trong ArrayList?
+=> get(i)         → O(1)
+   add(end)       → O(1) amortized (O(n) khi resize)
+   add(middle)    → O(n) vì phải shift phần tử
+   remove(i)      → O(n) vì phải shift phần tử
+
+- Dynamic array resize hoạt động như thế nào?
+=> Khi size == capacity: tạo array mới capacity * 1.5, copy toàn bộ phần tử sang → O(n).
+   Nhưng amortized O(1) per insert vì resize hiếm xảy ra.
+
+---
+LinkedList
+
+- Singly vs Doubly LinkedList khác gì?
+=> Singly: mỗi node chỉ có pointer đến next.
+   Doubly: mỗi node có pointer đến cả next lẫn prev → delete node O(1) nếu có reference, traverse ngược được.
+
+- LinkedList vs ArrayList trade-off?
+=> LinkedList: add/remove đầu O(1), tốn thêm memory cho pointer, cache-unfriendly (nodes rải rác trong heap).
+   ArrayList: get by index O(1), add/remove giữa O(n), cache-friendly (contiguous memory).
+
+- Time complexity của get, add, remove?
+=> get(i)          → O(n) phải traverse từ head
+   add(head)       → O(1)
+   add(tail)       → O(1) nếu có tail pointer, O(n) nếu không
+   add(middle)     → O(n) tìm vị trí trước, O(1) link lại
+   remove(head)    → O(1)
+   remove(by value)→ O(n) phải tìm node
+
+- Tại sao get(i) của LinkedList là O(n)?
+=> Không có index, phải traverse từ head qua i nodes mới tới node cần lấy.
+
+---
+Stack
+
+- Stack là gì, LIFO là gì?
+=> Stack: cấu trúc LIFO — Last In First Out. Phần tử push vào sau sẽ pop ra trước.
+
+- Stack dùng trong thực tế ở đâu?
+=> Function call stack (CPU), undo/redo editor, back/forward browser, expression parsing, DFS iterative.
+
+- Implement Stack bằng Array vs LinkedList khác gì?
+=> Array: cần biết max size trước (hoặc resize), cache-friendly, access by index.
+   LinkedList: dynamic size, O(1) push/pop guaranteed không cần resize, dùng pointer nên tốn thêm memory.
+
+---
+Queue
+
+- Queue là gì, FIFO là gì?
+=> Queue: cấu trúc FIFO — First In First Out. Phần tử vào trước sẽ ra trước.
+
+- Queue vs Deque khác gì?
+=> Queue: chỉ enqueue ở tail, dequeue ở head (1 chiều).
+   Deque (Double-Ended Queue): add/remove cả 2 đầu → kết hợp cả Queue lẫn Stack.
+
+- Priority Queue là gì, khác Queue bình thường chỗ nào?
+=> Priority Queue: dequeue theo priority (không phải insertion order).
+   Implement bằng Heap: enqueue O(log n), dequeue O(log n), peek O(1).
+   Ví dụ: bệnh viện — bệnh nhân nặng được xử lý trước dù vào sau.
+
+- Khi nào dùng Queue thay vì Stack?
+=> Queue: xử lý theo thứ tự đến — messaging, ticketing, BFS, task scheduling.
+   Stack: cần reverse hoặc track state trước đó — undo, call stack, DFS.
+
+---
+Tree
+
+- Binary Tree vs BST khác gì?
+=> Binary Tree: mỗi node tối đa 2 con, không có rule về thứ tự giá trị.
+   BST (Binary Search Tree): left < node < right → cho phép search O(log n).
+
+- BST search/insert/delete time complexity?
+=> Average: O(log n) — mỗi bước loại bỏ nửa cây.
+   Worst case: O(n) — cây bị skewed (mất cân bằng).
+
+- Tại sao BST worst case là O(n)?
+=> Insert dữ liệu đã sorted (1,2,3,4,5) → mỗi node chỉ có right child → cây thành linked list, height = n.
+
+- Inorder/Preorder/Postorder dùng khi nào?
+=> Inorder   (L→N→R): BST → output sorted tăng dần.
+   Preorder  (N→L→R): copy/serialize cấu trúc cây.
+   Postorder (L→R→N): delete cây (xóa con trước cha), evaluate expression tree.
+
+- BFS vs DFS trên tree khác gì?
+=> BFS (level order): dùng queue, xử lý từng tầng — tìm shortest path, nearest node.
+   DFS: dùng recursion/stack, đi sâu trước — tốn ít memory hơn nếu cây rộng, tìm path tới leaf.
+
+- Balanced tree là gì, tại sao quan trọng?
+=> Balanced: height difference giữa left và right subtree của mọi node ≤ 1.
+   Quan trọng vì đảm bảo height = O(log n) → search/insert/delete luôn O(log n).
+   Unbalanced BST degrade về O(n). AVL Tree và Red-Black Tree tự cân bằng.
+
+---
+Heap
+
+- Heap là gì, Min-heap vs Max-heap?
+=> Heap: complete binary tree lưu bằng array, đảm bảo heap property.
+   Min-heap: parent <= children → root là phần tử nhỏ nhất.
+   Max-heap: parent >= children → root là phần tử lớn nhất.
+   Dùng khi cần lấy min/max liên tục nhanh.
+
+- Heap vs BST — khi nào dùng cái nào?
+=> Heap: chỉ cần lấy min/max nhanh O(1), insert/delete O(log n). Không search được.
+   BST: cần search O(log n), inorder sorted, range query. Linh hoạt hơn nhưng phức tạp hơn.
+
+- Tại sao peek() O(1) nhưng poll() O(log n)?
+=> peek(): chỉ đọc root (index 0 trong array) → O(1).
+   poll(): xóa root → swap root với node cuối → giảm size → bubbleDown để restore heap property → O(log n).
+
+- Tại sao Heap lưu bằng Array không cần pointer?
+=> Vì Heap là complete binary tree — fill từ trái sang phải theo từng tầng.
+   Index relationship guaranteed:
+     parent(i) = (i-1) / 2
+     left(i)   = 2*i + 1
+     right(i)  = 2*i + 2
+   → Không cần pointer, tiết kiệm memory, cache-friendly.
+
+- Priority Queue implement bằng Heap như thế nào?
+=> Wrap Heap bên trong:
+     enqueue(val) → heap.insert(val)    → O(log n)
+     dequeue()    → heap.extractMin()   → O(log n)  (hoặc extractMax cho max-priority)
+     peek()       → heap.peekMin()      → O(1)
+   Element có priority cao hơn nằm ở root, luôn được dequeue trước.
+
+---
+Graph
+
+- Graph vs Tree khác gì?
+=> Tree: acyclic connected graph — có root, không có cycle, mỗi node có đúng 1 parent (trừ root).
+   Graph: tổng quát hơn — có thể có cycle, có thể không connected, không có root, edge có thể có weight.
+   Tree là một dạng đặc biệt của Graph.
+
+- Directed vs Undirected graph?
+=> Directed: edge có hướng — A→B không có nghĩa B→A. Dùng: follow trên mạng xã hội, dependency.
+   Undirected: edge hai chiều — A-B nghĩa là cả A→B lẫn B→A. Dùng: friendship, road map.
+
+- Adjacency List vs Adjacency Matrix khi nào dùng cái nào?
+=> Adjacency List: O(V+E) space — dùng cho sparse graph (ít edge, V lớn). Hầu hết real-world graph.
+   Adjacency Matrix: O(V²) space — dùng cho dense graph, khi cần check edge(u,v) O(1) thay vì O(degree).
+
+- BFS vs DFS — khi nào dùng cái nào?
+=> BFS: shortest path (unweighted), level-order traversal, find nearest neighbor. Dùng queue.
+   DFS: cycle detection, topological sort, connected components, maze/backtracking. Dùng recursion/stack.
+
+- Weighted graph dùng algorithm nào tìm shortest path?
+=> Dijkstra: non-negative weights, O((V+E) log V) dùng priority queue.
+   Bellman-Ford: có negative weights, O(V*E), detect negative cycle.
+   A*: có heuristic (pathfinding game/map), nhanh hơn Dijkstra trong thực tế.
+
+- DAG là gì, dùng ở đâu?
+=> DAG = Directed Acyclic Graph: directed graph, không có cycle.
+   Dùng: dependency resolution (npm/maven), task scheduling, topological sort, build systems.
+
+- Cycle detection làm thế nào?
+=> Undirected: DFS + track parent. Nếu gặp visited node không phải parent → cycle.
+   Directed: DFS + 3 màu (white=unvisited, gray=in-progress, black=done).
+             Nếu gặp gray node → back edge → cycle.
+
+---
+General (hay hỏi nhất)
+
+- Time/Space complexity của từng structure?
+=>
+  Operation          | Array | LinkedList | Stack | Queue | HashMap | BST      | Heap
+  -------------------|-------|------------|-------|-------|---------|----------|----------
+  Access by index    | O(1)  | O(n)       | O(n)  | O(n)  | O(1)    | O(log n) | O(n)
+  Search             | O(n)  | O(n)       | O(n)  | O(n)  | O(1)    | O(log n) | O(n)
+  Insert (head)      | O(n)  | O(1)       | O(1)  | —     | O(1)    | O(log n) | —
+  Insert (end/push)  | O(1)* | O(1)**     | O(1)  | O(1)  | O(1)    | O(log n) | O(log n)
+  Delete             | O(n)  | O(1)***    | O(1)  | O(1)  | O(1)    | O(log n) | O(log n)
+  Min/Max            | O(n)  | O(n)       | O(n)  | O(n)  | O(n)    | O(log n) | O(1)
+  Space              | O(n)  | O(n)       | O(n)  | O(n)  | O(n)    | O(n)     | O(n)
+
+  * amortized  ** with tail pointer  *** given node reference
+
+- Khi nào chọn structure nào?
+=> Cần get by index nhanh          → Array / ArrayList
+   Cần add/remove đầu nhanh        → LinkedList
+   Cần LIFO / undo / backtrack     → Stack
+   Cần FIFO / process in order     → Queue
+   Cần lookup O(1) by key          → HashMap
+   Cần sorted + search + range     → BST
+   Cần min/max nhanh liên tục      → Heap / Priority Queue
+   Cần model relationship/network  → Graph
+
+- Hash collision xử lý thế nào?
+=> Chaining: mỗi bucket là linked list — nhiều key cùng hash → append vào list. O(1) avg, O(n) worst.
+   Open Addressing: tìm slot trống tiếp theo trong array.
+     Linear probing: slot+1, slot+2, ...
+     Quadratic probing: slot+1², slot+2², ...
+
+- HashMap hoạt động bên trong như thế nào?
+=> key.hashCode() → % capacity → bucket index → lưu (key, value) vào bucket.
+   Collision → chaining bằng linked list (Java 8+: chuyển sang red-black tree khi bucket size > 8).
+   Load factor default = 0.75: khi 75% bucket đầy → resize gấp đôi + rehash toàn bộ → O(n).
+   get/put average O(1), worst case O(n) nếu tất cả key hash cùng bucket.
