@@ -1,0 +1,5 @@
+1. Process:
+- It's a program that is running in the memory and has its own address space.
+2. Thread:
+- It's a part of a process and if multiple threads are running in the same process,
+they share the same address space.

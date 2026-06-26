@@ -1,0 +1,40 @@
+1. Array:
+Use array when:
+- Need fast index access O(1)
+- Size known/stable
+- Iteration over all elements
+
+Avoid array when:
+- Frequent insert/delete at beginning or middle
+- Size changes a lot
+- Need fast search by value
+
+2. LinkedList
+- contain data and pointer(node)
+- array vs linkedlist:
++ array: access by index
++ linkedlist: insert at beginning(O(1))
+=> frequent insert/delete at head and middle, size unknown, don't need random access
+
+3. Stack
+- LIFO
+- Use when you need to reverse something or track previous state.
+
+4. Queue
+- FIFO
+- Use when you need to process something in order.
+
+5. tree
+- use org chart
+- relation parent and child
+- save like linkedlist
+
+6. heap
+- work like tree but parent always < or > child (min/max cuz get first element in array and add follow priorty)
+- save array
+
+
+
+
+
+
