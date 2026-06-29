@@ -44,26 +44,6 @@ and VT handle process async and now we can write code in sync way and VT will be
 + Atomic: fast, only compute add/minus/compare number.
 + volatile: only 1 thread write and threads read.
 
-6. Event loop:
-- Event loop: only use 1 thread to handle all incoming requests.
-- Event loop vs multithreading: event loop use in I/O, scale. Multithread use heavily compute
-
-7. CPU scheduler:
-- OS component deciding which process rún on CPU next
-- Scheduling algorithms:
-+ FCFS: first come first serve
-+ SJF: shortest job first (priority for the shortest time to complete)
-+ RR
-+ Priority Scheduling: higher priority runs
-
-8. Thread scheduler:
-- a part of OS or execution of JVM
-- working: threads in ready status, and they stay queue. Thread scheduler based on principals and algorithm and choose the best thread
-
-9. Compile, Interpreter, JVM:
-- Compile: compile code to machine code.
-- Interpreter: run code directly.
-- JVM: run code on JVM.
 
 
 
